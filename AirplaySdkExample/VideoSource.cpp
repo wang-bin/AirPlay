@@ -10,7 +10,16 @@
 #include <xindawn/mediaserver.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_thread.h>
+//https://stackoverflow.com/questions/30412951/unresolved-external-symbol-imp-fprintf-and-imp-iob-func-sdl2
+#if (_MSC_VER+0) >= 1900
+#pragma comment(lib, "legacy_stdio_definitions.lib")
+FILE _iob[] = { *stdin, *stdout, *stderr };
 
+extern "C" FILE* __cdecl __iob_func(void)
+{
+  return _iob;
+}
+#endif
 #if 0
 extern "C" bool LoadImageFromMemory(const BYTE *buffer, unsigned int size, const char *mime, unsigned int maxwidth, unsigned int maxheight, ImageInfo *info);
 extern "C" bool ReleaseImage(ImageInfo *info);
